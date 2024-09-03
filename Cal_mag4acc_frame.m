@@ -2,7 +2,7 @@ function [Tm2a,Bm,Vm,mag_strength]=Cal_mag4acc_frame(rotation,fix_point,Tg,Kg,a0
 % author  Zhang Xin
 
 if nargin==4
-   a0=[1,1,1,1,1,1,1,1,0,0,0,0];
+   a0=[1,1,1,1,1,1,1,0,0,0,0];
 end
 n=size(rotation,1);
 rotation{n+1}=Tg;
@@ -19,12 +19,12 @@ MaxIter=inf;
 a=Optimize_my_LM(@mag_in_diff_gesture,a0,rotation,TolX,TolFun,MaxIter);
 
 Tm2a=[a(1)   , a(2),  a(3);...
-    a(4) ,  a(5)   , a(6);...
-    a(7) ,  a(8),   -1];
+    a(4) ,  -1   , a(5);...
+    a(6) ,  a(7),   -1];
 
-Bm=[a(9);a(10);a(11)];
+Bm=[a(8);a(9);a(10)];
 
-mag_strength=a(12);
+mag_strength=a(11);
 
 Ba=rotation{end-3};
 Ka=rotation{end-4};
@@ -45,13 +45,13 @@ end
 
 function E=mag_in_diff_gesture(a,rotation)
 
-Tm2a=[a(1)   , a(2),  a(3);...
-    a(4) ,  a(5)   , a(6);...
-    a(7) ,  a(8),   -1];
+Tm2a=[a(1) , a(2),  a(3);...
+    a(4) , -1 , a(5);...
+    a(6) ,  a(7),   -1];
 
-Bm=[a(9);a(10);a(11)];
+Bm=[a(8);a(9);a(10)];
 
-mag_strength=a(12);
+mag_strength=a(11);
 
 Kg=rotation{end};
 Tg=rotation{end-1};

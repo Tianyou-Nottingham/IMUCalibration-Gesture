@@ -1,9 +1,10 @@
-function [PP,fix_point,rotation]=FindFixData(cal,threshold)
+function [PP, fix_point, rotation]=FindFixData(cal,threshold)
 
 % author  Zhang Xin
 
 n=size(cal,1);
 j=1;
+P = [];
 for i=1:n
     norm_gyro(i,1)=norm(cal(i,5:7));
     if i==1
@@ -22,6 +23,7 @@ for i=1:n
     end
 end
 j=1;
+PP = [];
 for i=1:size(P,1)-1
     if P(i,2)-P(i,1)>20
         PP(j,1)=P(i,1);

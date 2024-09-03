@@ -3,7 +3,7 @@ function [Tm2a,Bm,Vm]=mag2acc_matrix(fix_point,Ta,Ka,Ba,a0)
 % author  Zhang Xin
 
 if nargin==4 
-   a0=[1,1,1,1,1,1,1,1,0,0,0];
+   a0=[1,1,1,1,1,1,1,0,0,0];
 end
 B{1}=fix_point;
 B{2}=Ta;
@@ -17,10 +17,10 @@ B{4}=Ba;
 [a]=lsqnonlin(@elliposoid_H_acc,a0,[],[],options,B);
 
 Tm2a=[a(1)   , a(2),  a(3);...
-    a(4) ,  a(5)   , a(6);...
-    a(7) ,  a(8),   -1];
+    a(4) ,  -1   , a(5);...
+    a(6) ,  a(7),   -1];
 
-Bm=[a(9);a(10);a(11)];
+Bm=[a(8);a(9);a(10)];
 for i=1:size(fix_point,1)
     
     Acc(:,i)=Ta*Ka*(fix_point(i,1:3)'+Ba);
@@ -43,10 +43,10 @@ Ka=x{3};
 Ba=x{4};
 m=size(B,1);
 Tm2a=[a(1)   , a(2),  a(3);...
-    a(4) ,  a(5)   , a(6);...
+    a(4) ,  -1   , a(6);...
     a(7) ,  a(8),   -1];
 
-Bm=[a(9);a(10);a(11)];
+Bm=[a(8);a(9);a(10)];
 
 for i=1:m
     Acc(:,i)=Ta*Ka*(B(i,1:3)'+Ba);

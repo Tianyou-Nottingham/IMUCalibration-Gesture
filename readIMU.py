@@ -1,20 +1,34 @@
 import re
-import os 
-import os.path as osp
-
-# Scaled. Acc (mg) [  00066.65, -00013.67,  01038.09 ], Gyr (DPS) [  00007.02,  00001.52, -00000.30 ], Mag (uT) [  00000.00,  00000.00,  00000.00 ], Tmp (C) [  00025.78 ]
 import scipy.io
+import numpy as np
 
 # Read the data from the file
-filepath  = "C:\\Users\\ezxtz6\\Downloads\\CoolTermWin\\1.txt"
+filepath  = "C:\\Users\\ezxtz6\\Downloads\\CoolTermWin\\static_drift.txt"
 with open(filepath, 'r') as file:
-    data = file.read()
+    datas = file.readlines()
+# Accel: -856.00,-350.00,8592.00; Gyro:122.00,29.00,-31.00; Compass:-114.00,99.00,82.00; 
+# Split the data into individual readings
+# # Initialize lists to store the parsed values
 
-# Extract the numbers using regular expressions
-numbers = re.findall(r'[-+]?\d*\.\d+|\d+', data)
+parsed_data = []
 
-# Convert the numbers to floats
-numbers = [float(num) for num in numbers]
+for (i, data) in enumerate(datas):
+    data_list = []
+    readings = data.split(';')
+    data_list.append(i)
+    # Parse each reading and extract the values
+    for reading in readings:
+        # Extract the values using regular expressions
+        values = re.findall(r'[-+]?\d*\.\d+|\d+', reading)
+    
+        # Convert the values to floats
+        values = [float(value) for value in values]
+    
+        # Append the values to the respective lists
+        [data_list.append(value) for value in values]
 
-# Save the numbers to a MATLAB file
-scipy.io.savemat('data.mat', {'numbers': numbers})
+    parsed_data.append(data_list)
+
+mat_data = np.array(parsed_data)
+# Save the parsed data to a MATLAB file
+scipy.io.savemat('drift.mat', {'drift': mat_data})

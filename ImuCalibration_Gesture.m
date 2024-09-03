@@ -8,7 +8,7 @@ function [Ta,Ka,Ba,Tg,Kg,Bg,Tm2a,Bm,Vm,mag_strength]=ImuCalibration_Gesture(data
 % author  Zhang Xin
 
 
-[~,fix_point,rotation]=FindFixData(data,30);
+[~,fix_point,rotation]=FindFixData(data,300);
 
 [Ta,Ka,Ba]=ICRA2014_acc(fix_point);
 

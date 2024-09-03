@@ -94,8 +94,8 @@ linkaxes(p1,'x');
 
 figure('NumberTitle', 'off', 'Name', 'sensor attitude ');
 set(gcf, 'doublebuffer', 'on');
-% writerObj=VideoWriter('J:\out.avi');
-% open(writerObj);
+writerObj=VideoWriter('out.avi');
+open(writerObj);
 for i = 1:40:m       %show sensor attitude
    
     R0=quatern2rotMat(Q(i,:));                 % only gyro attitude
@@ -182,11 +182,11 @@ for i = 1:40:m       %show sensor attitude
     text(15,0,-3, num2str(roundn(Bg_ESKF(i,:)',-4)));
     drawnow
     
-%     %%%%
-%     frame=getframe;
-%     writeVideo(writerObj,frame);
+     %%%%
+     frame=getframe;
+     writeVideo(writerObj,frame);
 end
-%close(writerObj);
+close(writerObj);
 
 
 
